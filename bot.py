@@ -16,7 +16,7 @@ from telegram.ext import (
 from telegram.constants import ParseMode
 from ddgs import DDGS
 
-TOKEN = "8810717923:AAHlXkteHFKj9_Ihxh1Uv4v6v1iPQ55yHpQ"
+TOKEN = ""
 
 # ──────────────────────────────────────────────
 # HANDLER de /start
