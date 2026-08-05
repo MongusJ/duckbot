@@ -3,6 +3,8 @@
 # Inline: @TuBot <consulta> desde cualquier chat
 # Vista previa de enlaces con Instant View automático
 
+import os
+import logging
 from telegram import Update, InlineQueryResultArticle, InputTextMessageContent
 from telegram import InlineQueryResultsButton
 from telegram.ext import (
@@ -16,7 +18,10 @@ from telegram.ext import (
 from telegram.constants import ParseMode
 from ddgs import DDGS
 
-TOKEN = ""
+TOKEN = os.getenv("TOKEN")
+
+if not TOKEN:
+    raise ValueError("No se encontró el TOKEN. Configúralo como variable de entorno.")
 
 # ──────────────────────────────────────────────
 # HANDLER de /start
