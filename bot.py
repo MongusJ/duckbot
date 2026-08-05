@@ -30,6 +30,9 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # === SERVIDOR HEALTH (para que Render no mate el proceso) ===
+from http.server import HTTPServer
+from http.server import BaseHTTPRequestHandler
+
 class HealthHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
