@@ -1,10 +1,12 @@
 # bot.py — DuckBot versión completa
 # Comandos: /start, /ayuda, /buscar
-# Inline: @TuBot <consulta> desde cualquier chat
+# Inline: @Another_duck_bot <consulta> desde cualquier chat
 # Vista previa de enlaces con Instant View automático
 
 import os
 import logging
+import threading
+from http.server import HTTPServer, BaseHTTPRequestHandler
 from telegram import Update, InlineQueryResultArticle, InputTextMessageContent
 from telegram import InlineQueryResultsButton
 from telegram.ext import (
@@ -30,9 +32,6 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # === SERVIDOR HEALTH (para que Render no mate el proceso) ===
-from http.server import HTTPServer
-from http.server import BaseHTTPRequestHandler
-
 class HealthHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
