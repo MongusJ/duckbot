@@ -179,7 +179,7 @@ async def texto_generico(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Si quieres buscar algo, usa:\n"
         "`/buscar {texto}`\n\n"
         "O desde cualquier chat:\n"
-        "`@TuBot {texto}`",
+        "`@Another_duck_bot {texto}`",
         parse_mode=ParseMode.MARKDOWN
     )
 
