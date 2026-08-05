@@ -33,7 +33,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/ayuda — lista de comandos\n"
         "/buscar <término> — busca en DuckDuckGo\n\n"
         "También puedes usarme desde cualquier chat:\n"
-        "escribe `@TuBot <búsqueda>` y elige un resultado.",
+        "escribe `@Another_Duck_bot <búsqueda>` y elige un resultado.",
         parse_mode=ParseMode.MARKDOWN
     )
 
@@ -49,7 +49,7 @@ async def ayuda(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "**Uso inline:**\n"
         "En cualquier chat escribe:\n"
         "`@TuBot <lo que quieras buscar>`\n\n"
-        "Ejemplo: `@TuBot clima en CDMX`",
+        "Ejemplo: `@Another_Duck_bot clima en CDMX`",
         parse_mode=ParseMode.MARKDOWN
     )
 
