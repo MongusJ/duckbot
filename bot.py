@@ -48,8 +48,8 @@ async def ayuda(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "• `/buscar <palabras>` — Busca en DuckDuckGo\n\n"
         "**Uso inline:**\n"
         "En cualquier chat escribe:\n"
-        "`@TuBot <lo que quieras buscar>`\n\n"
-        "Ejemplo: `@Another_Duck_bot clima en CDMX`",
+        "`@Another_duck_bot <lo que quieras buscar>`\n\n"
+        "Ejemplo: `@Another_duck_bot clima en CDMX`",
         parse_mode=ParseMode.MARKDOWN
     )
 
