@@ -38,15 +38,15 @@ async def ayuda(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def buscar(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not context.args:
-        await update.message.reply_text("❌ Escribe algo para buscar. Ej: /buscar clima hoy")
+        await update.message.reply_text("❌ Escribe algo para buscar. Ej: /buscar clima en Xalapa")
         return
 
     query = " ".join(context.args)
     await update.message.chat.send_action(action="typing")
 
     try:
-        with DDGS() as ddgs:
-            results = list(ddgs.text(query, max_results=5, region='wt-wt', safesearch='off'))
+        with DDGS(headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}) as ddgs:
+            results = list(ddgs.text(query, max_results=5))
 
         if not results:
             await update.message.reply_text("😕 No encontré resultados.")
