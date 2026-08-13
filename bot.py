@@ -45,7 +45,8 @@ async def buscar(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.chat.send_action(action="typing")
 
     try:
-        with DDGS(headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}) as ddgs:
+        proxies = "socks5://178.32.222.164:1080"  # proxy público
+        with DDGS(proxies=proxies, timeout=20) as ddgs:
             results = list(ddgs.text(query, max_results=5))
 
         if not results:
@@ -61,6 +62,7 @@ async def buscar(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     except Exception as e:
         await update.message.reply_text(f"⚠️ Error: {e}")
+
 
 # === INLINE MODE ===
 async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE):

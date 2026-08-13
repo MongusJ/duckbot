@@ -2,3 +2,4 @@ python-telegram-bot==22.8
 duckduckgo-search==7.5.1
 ddgs
 flask
+httpx[socks]
