@@ -6,6 +6,8 @@
 import os
 import logging
 import threading
+import time
+from flask import Flask
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from telegram import Update, InlineQueryResultArticle, InputTextMessageContent
 from telegram import InlineQueryResultsButton
@@ -204,19 +206,36 @@ async def texto_generico(update: Update, context: ContextTypes.DEFAULT_TYPE):
         parse_mode=ParseMode.MARKDOWN
     )
 
+# === Keep-alive server para Render ===
+app_flask = Flask(__name__)
+
+@app_flask.route('/')
+def home():
+    return "Bot alive!"
+
+def run_flask():
+    app_flask.run(host='0.0.0.0', port=int(os.environ.get('PORT', 10000)))
+
+
+
+
 # ──────────────────────────────────────────────
 # FUNCIÓN PRINCIPAL
 # ──────────────────────────────────────────────
 def main():
-    app = ApplicationBuilder().token(TOKEN).build()
+    # Iniciar servidor web en segundo plano
+    t = threading.Thread(target=run_flask, daemon=True)
+    t.start()
 
+    app = Application.builder().token(TOKEN).build()
+
+    app.add_handler(CommandHandler("acceso", acceso))
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("ayuda", ayuda))
     app.add_handler(CommandHandler("buscar", buscar))
     app.add_handler(InlineQueryHandler(inline_query))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, texto_generico))
 
-    print("🐤 DuckBot encendido — comandos + inline mode activos!")
+    print("✅ Bot corriendo con keep-alive...")
     app.run_polling()
 
 if __name__ == "__main__":
