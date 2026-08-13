@@ -46,18 +46,21 @@ async def buscar(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     try:
         with DDGS() as ddgs:
-            results = list(ddgs.text(query, max_results=5))
+            results = list(ddgs.text(query, max_results=5, region='wt-wt', safesearch='off'))
 
         if not results:
             await update.message.reply_text("😕 No encontré resultados.")
             return
 
         for r in results:
-            msg = f"**{r['title']}**\n{r['body']}\n[🔗 {r['href']}]({r['href']})"
+            title = r.get('title', 'Sin título')
+            body = r.get('body', '')
+            href = r.get('href', '')
+            msg = f"**{title}**\n{body}\n[🔗 {href}]({href})"
             await update.message.reply_text(msg, disable_web_page_preview=False)
 
     except Exception as e:
-        await update.message.reply_text(f"⚠️ Error al buscar: {e}")
+        await update.message.reply_text(f"⚠️ Error: {e}")
 
 # === INLINE MODE ===
 async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
