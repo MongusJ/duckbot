@@ -4,7 +4,7 @@ import threading
 from flask import Flask
 from telegram import Update, InlineQueryResultArticle, InputTextMessageContent, InlineQueryResultsButton
 from telegram.ext import Application, CommandHandler, ContextTypes, InlineQueryHandler
-from duckduckgo_search import DDGS
+from ddgs import DuckDuckGoSearch  # 👈 nuevo import
 
 # === CONFIG ===
 TOKEN = os.getenv("BOT_TOKEN")
@@ -38,16 +38,15 @@ async def ayuda(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def buscar(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not context.args:
-        await update.message.reply_text("❌ Escribe algo para buscar. Ej: /buscar clima en Xalapa")
+        await update.message.reply_text("❌ Escribe algo para buscar. Ej: /buscar clima")
         return
 
     query = " ".join(context.args)
     await update.message.chat.send_action(action="typing")
 
     try:
-        proxies = "socks5://178.32.222.164:1080"  # proxy público
-        with DDGS(proxies=proxies, timeout=20) as ddgs:
-            results = list(ddgs.text(query, max_results=5))
+        ddgs = DuckDuckGoSearch()
+        results = ddgs.text(query, max_results=5)
 
         if not results:
             await update.message.reply_text("😕 No encontré resultados.")
@@ -75,17 +74,20 @@ async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     try:
-        with DDGS() as ddgs:
-            results = list(ddgs.text(query, max_results=5))
+        ddgs = DuckDuckGoSearch()
+        results = ddgs.text(query, max_results=5)
 
         articles = []
         for r in results:
+            title = r.get('title', 'Sin título')
+            body = r.get('body', '')
+            href = r.get('href', '')
             articles.append(InlineQueryResultArticle(
-                id=r['href'],
-                title=r['title'],
-                description=r['body'][:100],
+                id=href,
+                title=title,
+                description=body[:100],
                 input_message_content=InputTextMessageContent(
-                    f"**{r['title']}**\n{r['body']}\n[🔗 {r['href']}]({r['href']})",
+                    f"**{title}**\n{body}\n[🔗 {href}]({href})",
                     parse_mode="Markdown"
                 )
             ))
