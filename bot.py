@@ -38,15 +38,16 @@ async def ayuda(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def buscar(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not context.args:
-        await update.message.reply_text("❌ Escribe algo para buscar. Ej: /buscar clima")
+        await update.message.reply_text("❌ Escribe algo para buscar. Ej: /buscar clima en Xalapa")
         return
 
     query = " ".join(context.args)
     await update.message.chat.send_action(action="typing")
 
     try:
-        ddgs = DuckDuckGoSearch()
-        results = ddgs.text(query, max_results=5)
+        proxies = "socks5://51.158.68.68:1080"
+        with DDGS(proxies=proxies, timeout=30) as ddgs:
+            results = list(ddgs.text(query, max_results=5))
 
         if not results:
             await update.message.reply_text("😕 No encontré resultados.")
@@ -74,8 +75,9 @@ async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     try:
-        ddgs = DuckDuckGoSearch()
-        results = ddgs.text(query, max_results=5)
+        proxies = "socks5://51.158.68.68:1080"
+        with DDGS(proxies=proxies, timeout=30) as ddgs:
+            results = list(ddgs.text(query, max_results=5))
 
         articles = []
         for r in results:
@@ -99,6 +101,7 @@ async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
             text="⚠️ Error en la búsqueda",
             start_parameter="error"
         ))
+
 
 # === MAIN ===
 def run_bot():

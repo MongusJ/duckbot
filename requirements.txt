@@ -1,4 +1,4 @@
 python-telegram-bot==22.8
 flask==3.1.1
-ddgs==1.0.0
+duckduckgo-search==7.5.1
 httpx[socks]
